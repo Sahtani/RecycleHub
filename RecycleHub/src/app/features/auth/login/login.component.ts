@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit{
       tap((state) => {
         if (state.user) {
           // Rediriger en cas de connexion réussie
-          this.router.navigate(['/']).then(() => {
+          this.router.navigate(['/dashboard']).then(() => {
             console.log('Navigation réussie');
           }).catch((error) => {
             console.error('Erreur de navigation :', error);
