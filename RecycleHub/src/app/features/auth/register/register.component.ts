@@ -1,6 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AuthEffects} from '../store/effects/auth.effects';
+
+import * as AuthActions from '../store/actions/auth.actions';
+import {AuthState} from '../store/state/auth.state';
+import {Store} from '@ngrx/store';
+import {Router} from '@angular/router';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -25,10 +32,27 @@ export class RegisterComponent implements OnInit{
 
       });
   }
+  constructor(private store: Store<{auth: AuthState}>, private router: Router) {
+    this.store.select('auth').pipe(
+      tap((state) => {
+        if(state.user) {
+          this.router.navigate(['/login']).then(() => {
+            console.log('Navigation réussie');
+          }).catch((error) => {
+            console.error('Erreur de navigation :', error);
+          });
+        }
+        if (state.error) {
+          alert(state.error);
+        }
+      })
+    ).subscribe();
+  }
 
   onSubmit() {
     if (this.userForm?.valid){
       console.log("form valide");
+      this.store.dispatch(AuthActions.register({ user: this.userForm.value}))
     }
     else {
       console.log('form invalide');

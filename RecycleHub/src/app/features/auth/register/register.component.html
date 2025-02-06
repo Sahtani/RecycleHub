@@ -1,24 +1,60 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<form class="w-full" [formGroup]="userForm" (ngSubmit)="onSubmit()">
   <!-- First Name -->
-  <div>
-    <label>First Name:</label>
-    <input type="text" formControlName="firstName">
+  <div class="relative mb-6">
+    <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">First Name:<svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
+    </svg>
+    </label>
+    <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none " >
+        <svg class="stroke-current ml-1" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21V20.1429C20 19.0805 20 18.5493 19.8997 18.1099C19.5578 16.6119 18.3881 15.4422 16.8901 15.1003C16.4507 15 15.9195 15 14.8571 15H10C8.13623 15 7.20435 15 6.46927 15.3045C5.48915 15.7105 4.71046 16.4892 4.30448 17.4693C4 18.2044 4 19.1362 4 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </div>
+      <input type="text" formControlName="firstName" id="default-search" class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Name">
+    </div>
+
     <div *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
       <small *ngIf="userForm.get('firstName')?.errors?.['required']">Champ obligatoire</small>
       <small *ngIf="userForm.get('firstName')?.errors?.['minlength']">Minimum 2 caractères</small>
     </div>
+
   </div>
 
   <!-- Last Name -->
-  <div>
-    <label>Last Name:</label>
-    <input type="text" formControlName="lastName">
+  <div class="relative mb-6">
+    <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Last Name:<svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
+    </svg></label>
+    <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
+        <svg class="stroke-current ml-1" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21V20.1429C20 19.0805 20 18.5493 19.8997 18.1099C19.5578 16.6119 18.3881 15.4422 16.8901 15.1003C16.4507 15 15.9195 15 14.8571 15H10C8.13623 15 7.20435 15 6.46927 15.3045C5.48915 15.7105 4.71046 16.4892 4.30448 17.4693C4 18.2044 4 19.1362 4 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </div>
+      <input type="text" class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Name" formControlName="lastName">
+
+    </div>
     <div *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
       <small *ngIf="userForm.get('lastName')?.errors?.['required']">Champ obligatoire</small>
       <small *ngIf="userForm.get('lastName')?.errors?.['minlength']">Minimum 2 caractères</small>
     </div>
   </div>
-
+  <!--name-->
+  <div class="relative mb-6">
+    <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Name <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
+    </svg>
+    </label>
+    <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
+        <svg class="stroke-current ml-1" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21V20.1429C20 19.0805 20 18.5493 19.8997 18.1099C19.5578 16.6119 18.3881 15.4422 16.8901 15.1003C16.4507 15 15.9195 15 14.8571 15H10C8.13623 15 7.20435 15 6.46927 15.3045C5.48915 15.7105 4.71046 16.4892 4.30448 17.4693C4 18.2044 4 19.1362 4 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </div>
+      <input type="text"  class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Name" formControlName="lastName">
+    </div>
+  </div>
   <!-- Email -->
   <div>
     <label>Email:</label>
