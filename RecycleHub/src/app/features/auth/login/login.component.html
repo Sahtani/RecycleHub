@@ -1,1 +1,70 @@
-<p>login works!</p>
+<div class="w-full">
+  <div class="w-full mt-16">
+
+
+    <form (ngSubmit)="onLogin()" [formGroup]="loginForm" class="m-10">
+
+
+      <!-- Email -->
+
+      <div class="relative mb-6">
+        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Email
+          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+              fill="#EF4444"/>
+          </svg>
+        </label>
+        <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
+          </div>
+          <input
+            class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+            formControlName="email"
+            placeholder="Enter Email"
+            type="email">
+        </div>
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <small *ngIf="loginForm.get('email')?.errors?.['required']">Champ obligatoire</small>
+          <small *ngIf="loginForm.get('email')?.errors?.['email']">Email invalide</small>
+        </div>
+      </div>
+      <!-- Password -->
+
+      <div class="relative mb-2">
+        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Password
+          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+              fill="#EF4444"/>
+          </svg>
+        </label>
+        <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
+
+          </div>
+          <input
+            class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+            formControlName="password"
+            placeholder="Enter Password"
+            type="text">
+        </div>
+      </div>
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <small *ngIf="loginForm.get('password')?.errors?.['required']">Champ obligatoire</small>
+        <small *ngIf="loginForm.get('password')?.errors?.['pattern']">
+          Minimum 8 caractères avec chiffres et lettres
+        </small>
+      </div>
+
+      <div class="flex items-center justify-center">
+        <button [disabled]="loginForm.invalid"
+                class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7"
+                type="submit">
+          Login
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

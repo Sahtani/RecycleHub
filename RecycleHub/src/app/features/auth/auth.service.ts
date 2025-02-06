@@ -23,7 +23,7 @@ export class AuthService {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     const foundUser = users.find((user: User) => user.email === email && user.password === password);
     if (foundUser) {
-      console.log('login successful !');
+      console.log('login successful and users data is valid  !');
       return of(foundUser).pipe(delay(500));
 
     } else {

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AuthEffects} from '../store/effects/auth.effects';
 
 import * as AuthActions from '../store/actions/auth.actions';
 import {AuthState} from '../store/state/auth.state';

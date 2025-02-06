@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {Store} from '@ngrx/store';
+import {Router} from '@angular/router';
 import * as AuthActions from '../store/actions/auth.actions';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AuthState } from '../store/state/auth.state';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {AuthState} from '../store/state/auth.state';
 
 @Component({
   selector: 'app-login',
@@ -47,12 +47,12 @@ export class LoginComponent implements OnInit{
   }
 
   onLogin() {
-
     const email = this.loginForm.get('email')?.value ?? '';
     const password = this.loginForm.get('password')?.value ?? '';
 
     if (email && password) {
       this.store.dispatch(AuthActions.login({ email, password }));
+      console.log('login done ');
     } else {
       alert('Veuillez remplir tous les champs.');
     }
