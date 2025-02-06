@@ -1,1 +1,76 @@
-<p>register works!</p>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <!-- First Name -->
+  <div>
+    <label>First Name:</label>
+    <input type="text" formControlName="firstName">
+    <div *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+      <small *ngIf="userForm.get('firstName')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('firstName')?.errors?.['minlength']">Minimum 2 caractères</small>
+    </div>
+  </div>
+
+  <!-- Last Name -->
+  <div>
+    <label>Last Name:</label>
+    <input type="text" formControlName="lastName">
+    <div *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+      <small *ngIf="userForm.get('lastName')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('lastName')?.errors?.['minlength']">Minimum 2 caractères</small>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label>Email:</label>
+    <input type="email" formControlName="email">
+    <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+      <small *ngIf="userForm.get('email')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('email')?.errors?.['email']">Email invalide</small>
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div>
+    <label>Mot de passe:</label>
+    <input type="text" formControlName="password">
+    <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+      <small *ngIf="userForm.get('password')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('password')?.errors?.['pattern']">
+        Minimum 8 caractères avec chiffres et lettres
+      </small>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div>
+    <label>Address:</label>
+    <input type="text" formControlName="address">
+    <div *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched">
+      <small *ngIf="userForm.get('address')?.errors?.['required']">Champ obligatoire</small>
+    </div>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <label>Phone:</label>
+    <input type="number" formControlName="phone">
+    <div *ngIf="userForm.get('phone')?.invalid && userForm.get('phone')?.touched">
+      <small *ngIf="userForm.get('phone')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('phone')?.errors?.['minlength']">Minimum 10 chiffres</small>
+    </div>
+  </div>
+
+  <!-- Date of Birth -->
+  <div>
+    <label>Date de naissance:</label>
+    <input type="date" formControlName="dateOfBirth">
+    <div *ngIf="userForm.get('dateOfBirth')?.invalid && userForm.get('dateOfBirth')?.touched">
+      <small *ngIf="userForm.get('dateOfBirth')?.errors?.['required']">Champ obligatoire</small>
+      <small *ngIf="userForm.get('dateOfBirth')?.errors?.['invalidDate']">
+        {{ userForm.get('dateOfBirth')?.errors?.['invalidDate'] }}
+      </small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="userForm.invalid">Soumettre</button>
+</form>
