@@ -1,4 +1,4 @@
-
+import {Injectable} from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -10,11 +10,10 @@ import {
 import {Store} from '@ngrx/store';
 import {AuthState} from '../features/auth/store/state/auth.state';
 import {map, Observable, take} from 'rxjs';
-import {Injectable} from '@angular/core';
 
 
 @Injectable({ providedIn: 'root'})
-export class AuthGuard implements CanActivate {
+export class Auth1Guard implements CanActivate {
   constructor(private store: Store<{ auth: AuthState}>, private router: Router) {}
 
   canActivate(): Observable<boolean | UrlTree> {

@@ -3,6 +3,7 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './features/auth/login/login.component';
 import {RegisterComponent} from './features/auth/register/register.component';
 import {DashboardComponentComponent} from './dashboard-component/dashboard-component.component';
+import {Auth1Guard} from './guards/auth1.guard';
 import {AuthGuard} from './guards/auth.guard';
 
 export const routes: Routes = [

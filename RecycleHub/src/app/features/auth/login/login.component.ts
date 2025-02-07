@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {Store} from '@ngrx/store';
-import {Router} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import * as AuthActions from '../store/actions/auth.actions';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {AuthState} from '../store/state/auth.state';
+import { Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AuthState } from '../store/state/auth.state';
 
 @Component({
   selector: 'app-login',
@@ -14,49 +14,61 @@ import {AuthState} from '../store/state/auth.state';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy {
   authState$: Observable<AuthState>;
   loginForm!: FormGroup;
+  private subscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private store: Store<{ auth: AuthState }>, private router: Router) {
-    this.authState$ = this.store.select('auth').pipe(
-      tap((state) => {
-        if (state.user) {
-          // Rediriger en cas de connexion réussie
-          this.router.navigate(['/dashboard']).then(() => {
-            console.log('Navigation réussie');
-          }).catch((error) => {
-            console.error('Erreur de navigation :', error);
-          });
-        }
-        if (state.error) {
-          alert(state.error);
-        }
-      })
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<{ auth: AuthState }>,
+    private router: Router
+  ) {
+    this.authState$ = this.store.select('auth');
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
+
+    this.subscription.add(
+      this.authState$
+        .pipe(
+          tap((state) => {
+            if (state.user) {
+              this.router
+                .navigate(['/dashboard'])
+                .then(() => console.log('Navigation réussie'))
+                .catch((error) => console.error('Erreur de navigation :', error));
+            }
+            if (state.error) {
+              alert(state.error);
+            }
+          })
+        )
+        .subscribe()
     );
   }
 
-  ngOnInit() {
-    this.initializeForm();
+  ngOnDestroy(): void {
+    // Nettoyer l'abonnement pour éviter les fuites de mémoire
+    this.subscription.unsubscribe();
   }
-  private initializeForm() {
-  this.loginForm = this.fb.group({
+
+  private initializeForm(): void {
+    this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
 
-  onLogin() {
+  onLogin(): void {
     const email = this.loginForm.get('email')?.value ?? '';
     const password = this.loginForm.get('password')?.value ?? '';
-
     if (email && password) {
       this.store.dispatch(AuthActions.login({ email, password }));
-      console.log('login done ');
+      console.log('Login dispatché');
     } else {
       alert('Veuillez remplir tous les champs.');
     }
   }
-
-
 }

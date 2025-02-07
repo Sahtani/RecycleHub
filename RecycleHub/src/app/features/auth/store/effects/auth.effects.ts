@@ -10,18 +10,18 @@ export class AuthEffects {
   private authService: AuthService = inject(AuthService)
 
   login$ = createEffect(() => this.actions$.pipe(
-    ofType(AuthActions.login),mergeMap(({email, password}) => this.authService.login$(email, password).pipe(
+    ofType(AuthActions.login), mergeMap(({email, password}) => this.authService.login$(email, password).pipe(
       map((user) => AuthActions.loginSuccess({user})),
-       catchError((error) => of(AuthActions.loginFailure({error: error.message})))
-     ))
+      catchError((error) => of(AuthActions.loginFailure({error: error.message})))
+    ))
   ));
   register$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.register),
-      mergeMap(({ user }) =>
+      mergeMap(({user}) =>
         this.authService.register$(user).pipe(
-          map((newUser) => AuthActions.registerSuccess({ user: newUser })),
-          catchError((error) => of(AuthActions.registerFailure({ error: error.message })))
+          map((newUser) => AuthActions.registerSuccess({user: newUser})),
+          catchError((error) => of(AuthActions.registerFailure({error: error.message})))
         )
       )
     )
