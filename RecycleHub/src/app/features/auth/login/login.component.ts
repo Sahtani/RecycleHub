@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           tap((state) => {
             if (state.user) {
               this.router
-                .navigate(['/dashboard'])
+                .navigate(['/profile'])
                 .then(() => console.log('Navigation réussie'))
                 .catch((error) => console.error('Erreur de navigation :', error));
             }
@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Nettoyer l'abonnement pour éviter les fuites de mémoire
     this.subscription.unsubscribe();
   }
 
