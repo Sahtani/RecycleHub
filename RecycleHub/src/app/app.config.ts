@@ -9,10 +9,11 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore } from '@ngrx/router-store';
 import {authReducer} from './features/auth/store/reducers/auth.reducer';
 import {AuthEffects} from './features/auth/store/effects/auth.effects';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay()),
     provideStore({auth: authReducer}),
     provideEffects([AuthEffects]),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideRouterStore()]
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideRouterStore(), provideAnimationsAsync()]
 };

@@ -7,10 +7,13 @@ import {AuthState} from '../store/state/auth.state';
 import {Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 import {tap} from 'rxjs/operators';
+import {HeaderFormComponent} from '../../../shared/header-form/header-form.component';
+import {SharedButtonComponent} from '../../../shared/shared-button/shared-button.component';
+import {NavbarComponent} from '../../../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HeaderFormComponent, SharedButtonComponent, NavbarComponent],
   templateUrl: './register.component.html',
   standalone: true,
   styleUrl: './register.component.css'

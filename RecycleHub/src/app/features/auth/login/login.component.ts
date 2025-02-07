@@ -2,16 +2,19 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import * as AuthActions from '../store/actions/auth.actions';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthState } from '../store/state/auth.state';
+import {NavbarComponent} from '../../../shared/navbar/navbar.component';
+import {HeaderFormComponent} from '../../../shared/header-form/header-form.component';
+import {SharedButtonComponent} from '../../../shared/shared-button/shared-button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, RouterLink, HeaderFormComponent, SharedButtonComponent],
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit, OnDestroy {

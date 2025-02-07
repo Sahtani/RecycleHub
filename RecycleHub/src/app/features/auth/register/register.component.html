@@ -1,7 +1,9 @@
-<div class="w-full">
-  <div class="w-full mt-16">
+<app-navbar></app-navbar>
 
+<div class="w-full h-[100vh]  flex items-center justify-center bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] ">
+  <div class="w-2xl   rounded shadow-xl bg-white">
 
+    <app-header-form></app-header-form>
     <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="m-10">
   <!-- First Name -->
       <div class="flex items-center justify-between gap-4 mb-0">
@@ -171,11 +173,11 @@
     </div>
   </div>
       <div class="flex items-center justify-center">
-        <button [disabled]="userForm.invalid"
-                class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7"
-                type="submit">
+        <app-shared-button
+          (clicked)="onSubmit()"
+          [disabled]="userForm.invalid">
           Create Account
-        </button>
+        </app-shared-button>
       </div>
 
 </form>

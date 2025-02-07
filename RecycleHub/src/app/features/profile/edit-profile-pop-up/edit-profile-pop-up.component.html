@@ -1,0 +1,17 @@
+<h2 class="text-xl font-bold mb-4">Edit Profile</h2>
+<!-- Exemple de formulaire de modification -->
+<form>
+  <div class="mb-3">
+    <label>Email:</label>
+    <input type="email" class="w-full border p-2" [(ngModel)]="data.email" name="email" />
+  </div>
+  <div class="mb-3">
+    <label>Full Name:</label>
+    <input type="text" class="w-full border p-2" [(ngModel)]="data.fullName" name="fullName" />
+  </div>
+  <!-- Ajoutez d'autres champs selon vos besoins -->
+  <div class="flex justify-end space-x-2 mt-4">
+    <button type="button" (click)="onCancel()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+    <button type="button" (click)="onSave()" class="px-4 py-2 bg-indigo-600 text-white rounded">Save</button>
+  </div>
+</form>

@@ -1,0 +1,7 @@
+<button
+  [disabled]="disabled"
+  [ngClass]="buttonClasses"
+  (click)="onClick($event)"
+  type="submit">
+  <ng-content></ng-content>
+</button>
