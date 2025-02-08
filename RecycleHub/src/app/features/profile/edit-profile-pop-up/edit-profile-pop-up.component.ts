@@ -1,6 +1,7 @@
 import {Component, Inject, Injectable} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormsModule} from '@angular/forms';
+import {User} from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-edit-profile-pop-up',
@@ -14,14 +15,13 @@ import {FormsModule} from '@angular/forms';
 export class EditProfilePopUpComponent {
   constructor(
     public dialogRef: MatDialogRef<EditProfilePopUpComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: User
   ) {}
   onCancel(): void {
     this.dialogRef.close();
   }
 
   onSave(): void {
-
     this.dialogRef.close(this.data);
   }
 

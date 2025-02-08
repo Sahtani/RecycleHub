@@ -26,5 +26,17 @@ export class AuthEffects {
       )
     )
   );
+  // update profile
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.updateUser),
+      mergeMap(({ user }) =>
+        this.authService.updateUser(user).pipe(
+          map((updatedUser) => AuthActions.updateUserSuccess({ user: updatedUser })),
+          catchError((error) => of(AuthActions.updateUserFailure({ error: error.message })))
+        )
+      )
+    )
+  );
 
 }

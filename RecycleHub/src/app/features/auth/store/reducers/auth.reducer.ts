@@ -20,5 +20,21 @@ export const authReducer = createReducer(initialState,
     ...state,
     error,
     loading: false,
+  })),
+// update profile
+on(AuthActions.updateUser, (state) => ({
+  ...state,
+  loading: true,
+  error: null,
+})),
+  on(AuthActions.updateUserSuccess, (state, { user }) => ({
+    ...state,
+    user: user,
+    loading: false,
+  })),
+  on(AuthActions.updateUserFailure, (state, { error }) => ({
+    ...state,
+    error: error,
+    loading: false,
   }))
 );

@@ -7,8 +7,7 @@ import {delay, Observable, of, throwError} from 'rxjs';
 })
 export class AuthService {
 
-  constructor() {
-  }
+  constructor() {}
 
   register$(userData: User): Observable<User> {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
@@ -30,6 +29,14 @@ export class AuthService {
       console.log('login failed !');
       return throwError(() => new Error('Invalid credentials')).pipe(delay(500));
     }
+  }
+
+  updateUser(user: User): Observable<User> {
+    const updatedUser = { ...user };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    console.log('data updated ');
+    // Retourne l'utilisateur mis à jour après un délai simulé de 500 ms
+    return of(user).pipe(delay(500));
   }
 
 

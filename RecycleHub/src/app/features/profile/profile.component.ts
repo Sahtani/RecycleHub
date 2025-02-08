@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+
+import * as AuthActions from '../auth/store/actions/auth.actions';
 import {Observable} from 'rxjs';
 import {AuthState} from '../auth/store/state/auth.state';
 import {User} from '../../core/models/user.model';
@@ -25,25 +26,31 @@ import {EditProfilePopUpComponent} from './edit-profile-pop-up/edit-profile-pop-
 
 export class ProfileComponent implements OnInit{
   disabled: boolean = false;
- user$!: Observable<User | null>;
+  user$!: Observable<User | null>;
+  user: User | null = null;
 
- constructor(private dialog: MatDialog,
-   private store: Store<{ auth: AuthState}>) {}
+  constructor(private dialog: MatDialog,private store: Store<{ auth: AuthState}>) {}
 
   ngOnInit(): void {
     this.user$ = this.store.select((state) => state.auth.user);
+    this.user$.subscribe(u => this.user = u);
   }
   openEditProfilePopup(): void {
+    const userData = this.user ? JSON.parse(JSON.stringify(this.user)) : null;
     const dialogRef = this.dialog.open(EditProfilePopUpComponent, {
       width: '400px',
-      data: { ...this.user$} // On transmet une copie des données utilisateur
+      data: userData
+     // data: { ...this.user$} // On transmet une copie d'utilisateur  (immutable )
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Ici, vous pouvez mettre à jour le profil (ex. dispatcher une action NgRx)
         console.log('Updated profile:', result);
-        // Mettez à jour vos données locales ou lancez une mise à jour via le store
-        this.user$ = result;
+
+       // this.store.dispatch(AuthActions.updateUser({user: {...result} }));
+        this.store.dispatch(AuthActions.updateUser({ user: JSON.parse(JSON.stringify(result)) }));
+
+
+        //  this.user$ = {...result};
       }
     });
   }
