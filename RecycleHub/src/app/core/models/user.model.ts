@@ -1,3 +1,11 @@
+
+
+
+
+export enum UserRole {
+  Collector = 'collector',
+  Particular = 'particular'
+}
 export interface User {
   email: string;
   password: string;
@@ -6,5 +14,6 @@ export interface User {
   address: string;
   phone: string;
   dateOfBirth: Date;
-  profilePhoto?: string; // Optionnel
+  profilePhoto?: string;
+  role: UserRole;
 }

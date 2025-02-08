@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {User} from '../models/user.model';
+import {User, UserRole} from '../models/user.model';
 import {delay, Observable, of, throwError} from 'rxjs';
 
 @Injectable({
@@ -18,6 +18,10 @@ export class AuthService {
 
   }*/
   register$(userData: User): Observable<User> {
+
+    if (!userData.role) {
+      userData.role = UserRole.Particular;
+    }
     localStorage.setItem('user', JSON.stringify(userData));
     console.log('registration successful!');
     return of(userData).pipe(delay(500));
