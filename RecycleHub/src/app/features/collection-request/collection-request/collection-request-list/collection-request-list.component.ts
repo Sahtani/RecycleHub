@@ -33,6 +33,7 @@ export class CollectionRequestListComponent implements OnInit {
       }
     });
   }
+
 // Méthodes pour éditer ou supprimer une demande pour un particulier
   editRequest(request: CollectionRequest): void {
 

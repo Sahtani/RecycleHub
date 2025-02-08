@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User, UserRole} from '../models/user.model';
-import {delay, Observable, of, throwError} from 'rxjs';
+import {defer, delay, Observable, of, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,27 +17,29 @@ export class AuthService {
     return of(userData).pipe(delay(500));
 
   }*/
+
   register$(userData: User): Observable<User> {
 
-    if (!userData.role) {
-      userData.role = UserRole.Particular;
+    const mutableUserData = { ...userData };
+    if (!mutableUserData.role) {
+      mutableUserData.role = UserRole.Particular;
     }
-    localStorage.setItem('user', JSON.stringify(userData));
+
+    localStorage.setItem('user', JSON.stringify(mutableUserData));
     console.log('registration successful!');
-    return of(userData).pipe(delay(500));
+    return of(mutableUserData).pipe(delay(500));
   }
 
-
   login$(email: string, password: string): Observable<User> {
-    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-    const foundUser = users.find((user: User) => user.email === email && user.password === password);
-    if (foundUser) {
-      console.log('login successful and users data is valid  !');
-      return of(foundUser).pipe(delay(500));
-
-    } else {
-      return throwError(() => new Error('Invalid credentials')).pipe(delay(500));
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const foundUser: User = JSON.parse(userData);
+      if (foundUser.email === email && foundUser.password === password) {
+        console.log('login successful and user data is valid!');
+        return of(foundUser).pipe(delay(500));
+      }
     }
+    return throwError(() => new Error('Invalid credentials')).pipe(delay(500));
   }
 
   updateUser(user: User): Observable<User> {

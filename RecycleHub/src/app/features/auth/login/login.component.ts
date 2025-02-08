@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   onLogin(): void {
     const email = this.loginForm.get('email')?.value ?? '';
     const password = this.loginForm.get('password')?.value ?? '';
+    const userRole = this.loginForm.get('password')?.value ?? '';
     if (email && password) {
       this.store.dispatch(AuthActions.login({ email, password }));
       console.log('Login dispatché');
