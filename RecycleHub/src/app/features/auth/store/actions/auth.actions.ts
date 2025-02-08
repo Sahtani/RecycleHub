@@ -44,3 +44,15 @@ export const updateUserFailure = createAction(
   '[Auth] Update User Failure',
   props<{ error: string }>()
 );
+
+// delete user account
+export const deleteUserAccount = createAction('[Auth] Delete User Account');
+
+export const deleteUserAccountSuccess = createAction(
+  '[Auth] Delete User Account Success'
+);
+
+export const deleteUserAccountFailure = createAction(
+  '[Auth] Delete User Account Failure',
+  props<{ error: string }>()
+);

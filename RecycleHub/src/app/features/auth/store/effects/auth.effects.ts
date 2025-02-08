@@ -39,4 +39,18 @@ export class AuthEffects {
     )
   );
 
+  // effect for deleting user 's account
+  deleteUserAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.deleteUserAccount),
+      mergeMap(() =>
+        this.authService.deleteUserAccount().pipe(
+          map(() => AuthActions.deleteUserAccountSuccess()),
+          catchError(error => of(AuthActions.deleteUserAccountFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
+
 }

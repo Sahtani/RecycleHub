@@ -9,14 +9,20 @@ export class AuthService {
 
   constructor() {}
 
-  register$(userData: User): Observable<User> {
+ /* register$(userData: User): Observable<User> {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
     users.push(userData);
     localStorage.setItem('users', JSON.stringify(users));
     console.log('registration successful !');
     return of(userData).pipe(delay(500));
 
+  }*/
+  register$(userData: User): Observable<User> {
+    localStorage.setItem('user', JSON.stringify(userData));
+    console.log('registration successful!');
+    return of(userData).pipe(delay(500));
   }
+
 
   login$(email: string, password: string): Observable<User> {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
@@ -26,7 +32,6 @@ export class AuthService {
       return of(foundUser).pipe(delay(500));
 
     } else {
-      console.log('login failed !');
       return throwError(() => new Error('Invalid credentials')).pipe(delay(500));
     }
   }
@@ -34,9 +39,17 @@ export class AuthService {
   updateUser(user: User): Observable<User> {
     const updatedUser = { ...user };
     localStorage.setItem('user', JSON.stringify(updatedUser));
-    console.log('data updated ');
-    // Retourne l'utilisateur mis à jour après un délai simulé de 500 ms
     return of(user).pipe(delay(500));
+  }
+
+  deleteUserAccount(): Observable<void> {
+
+    localStorage.removeItem('user');
+    console.log('user deleted');
+    console.log(localStorage);
+    localStorage.clear();
+
+    return of(void 0).pipe(delay(500));
   }
 
 

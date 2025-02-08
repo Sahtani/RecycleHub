@@ -1,56 +1,54 @@
 <app-navbar></app-navbar>
 
-<div class="w-full h-[100vh]  flex items-center justify-center bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] ">
-  <div class="w-2xl   rounded shadow-xl bg-white">
+<div class="w-full h-fit  flex items-center justify-center bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] ">
+  <div class="w-2xl h-auto   rounded shadow-xl bg-white">
 
     <app-header-form></app-header-form>
-    <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="m-10">
+    <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="!max-w-none !m-10 !p-0 !border-0 !rounded-none">
   <!-- First Name -->
-      <div class="flex items-center justify-between gap-4 mb-0">
-        <div class="relative ">
-          <div class="flex">
-            <label class="flex  items-center text-gray-600 text-sm font-medium">First Name:
+      <div class="flex flex-row items-center justify-between border-none !mb-0">
+        <!-- Contenu pour First Name -->
+        <div class="!mb-0">
+          <div class="flex flex-row ">
+            <label class="flex items-center text-gray-600 text-sm font-medium ">
+              First Name:
             </label>
-            <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7"
-                 xmlns="http://www.w3.org/2000/svg">
+            <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
                 fill="#EF4444"/>
             </svg>
-
           </div>
-
-          <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6 p-2">
-            <input class="block  h-11 pr-5  text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" formControlName="firstName" id="default-search"
+          <div class="relative text-gray-500 focus-within:text-gray-900">
+            <input class="block h-11 pr-5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+                   formControlName="firstName"
+                   id="default-search"
                    placeholder="Enter Name"
                    type="text">
           </div>
-
           <div *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
             <small *ngIf="userForm.get('firstName')?.errors?.['required']">Champ obligatoire</small>
             <small *ngIf="userForm.get('firstName')?.errors?.['minlength']">Minimum 2 caractères</small>
           </div>
-
         </div>
 
-        <!-- Last Name -->
-        <div class="relative">
-          <div class="flex">
-            <label class="flex  items-center text-gray-600 text-sm font-medium">First Name:
+        <!-- Contenu pour Last Name -->
+        <div class="!mb-0">
+          <div class="flex flex-row">
+            <label class="flex items-center text-gray-600 text-sm font-medium">
+              Last Name:
             </label>
-            <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7"
-                 xmlns="http://www.w3.org/2000/svg">
+            <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
                 fill="#EF4444"/>
-        </svg>
-
+            </svg>
           </div>
-          <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+          <div class="relative text-gray-500 focus-within:text-gray-900">
             <input class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
                    formControlName="lastName"
-                   placeholder="Enter Name" type="text">
-
+                   placeholder="Enter Name"
+                   type="text">
           </div>
           <div *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
             <small *ngIf="userForm.get('lastName')?.errors?.['required']">Champ obligatoire</small>
@@ -62,13 +60,15 @@
       <!-- Email -->
 
       <div class="relative mb-6">
-        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Email
-          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex flex-row">
+          <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Email
+          </label>
+          <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
               fill="#EF4444"/>
           </svg>
-        </label>
+        </div>
         <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
           </div>
@@ -85,16 +85,17 @@
   </div>
       <!-- Address -->
       <div class="relative mb-6">
-        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Address
-          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex flex-row">
+          <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Address
+          </label>
+          <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
               fill="#EF4444"/>
           </svg>
-        </label>
+        </div>
         <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
-
           </div>
           <input
             class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
@@ -107,24 +108,24 @@
     </div>
       </div>
       <!-- Phone -->
-
-
       <div class="relative mb-6">
-        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Phone Number
-          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex flex-row">
+          <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Phone Number
+          </label>
+          <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
               fill="#EF4444"/>
           </svg>
-        </label>
+
+        </div>
         <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
-
           </div>
           <input
             class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
             formControlName="phone"
-            placeholder="Enter Phone No"
+            placeholder="Enter Phone Number"
             type="text">
     </div>
         <div *ngIf="userForm.get('phone')?.invalid && userForm.get('phone')?.touched">
@@ -132,17 +133,18 @@
           <small *ngIf="userForm.get('phone')?.errors?.['minlength']">Minimum 10 chiffres</small>
         </div>
   </div>
-
       <!-- Password -->
+      <div class="relative mb-1">
+        <div class="flex flex-row">
+          <label class="flex  items-center mb-1 text-gray-600 text-sm font-medium">Password
+          </label>
+          <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+            fill="#EF4444"/>
+        </svg>
+        </div>
 
-      <div class="relative mb-2">
-        <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Password
-          <svg class="ml-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
-              fill="#EF4444"/>
-          </svg>
-        </label>
         <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
 
@@ -162,9 +164,24 @@
       </div>
 
   <!-- Date of Birth -->
-  <div>
-    <label>Date de naissance:</label>
-    <input type="date" formControlName="dateOfBirth">
+    <div class="relative mb-1">
+      <div class="flex flex-row">
+    <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Date of birth:</label>
+        <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+            fill="#EF4444"/>
+        </svg>
+      </div>
+      <div class="relative  text-gray-500 focus-within:text-gray-900 mb-6">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
+
+        </div>
+
+        <input  class="block w-full h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+                type="date" formControlName="dateOfBirth">
+      </div>
+
     <div *ngIf="userForm.get('dateOfBirth')?.invalid && userForm.get('dateOfBirth')?.touched">
       <small *ngIf="userForm.get('dateOfBirth')?.errors?.['required']">Champ obligatoire</small>
       <small *ngIf="userForm.get('dateOfBirth')?.errors?.['invalidDate']">

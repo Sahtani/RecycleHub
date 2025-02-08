@@ -10,6 +10,7 @@ import {NavbarComponent} from '../../shared/navbar/navbar.component';
 import {SharedButtonComponent} from '../../shared/shared-button/shared-button.component';
 import {MatDialog} from '@angular/material/dialog';
 import {EditProfilePopUpComponent} from './edit-profile-pop-up/edit-profile-pop-up.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -29,11 +30,20 @@ export class ProfileComponent implements OnInit{
   user$!: Observable<User | null>;
   user: User | null = null;
 
-  constructor(private dialog: MatDialog,private store: Store<{ auth: AuthState}>) {}
+  constructor(private dialog: MatDialog,private store: Store<{ auth: AuthState}>, private router: Router) {}
 
   ngOnInit(): void {
     this.user$ = this.store.select((state) => state.auth.user);
-    this.user$.subscribe(u => this.user = u);
+    this.user$.subscribe(u => {
+      this.user = u;
+      if (u === null) {
+        this.router.navigate(['/login']).then(() => {
+          console.log('Navigation réussie');
+        }).catch((error) => {
+          console.error('Erreur de navigation :', error);
+        });
+      }
+    });
   }
   openEditProfilePopup(): void {
     const userData = this.user ? JSON.parse(JSON.stringify(this.user)) : null;
@@ -53,6 +63,12 @@ export class ProfileComponent implements OnInit{
         //  this.user$ = {...result};
       }
     });
+  }
+
+  onDeleteAccount(): void {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      this.store.dispatch(AuthActions.deleteUserAccount());
+    }
   }
 
 }
