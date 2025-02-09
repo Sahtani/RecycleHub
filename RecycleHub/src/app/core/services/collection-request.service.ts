@@ -54,13 +54,19 @@ export class CollectionRequestService {
       throw new Error('Demande introuvable');
     }
   }
-
-  // Supprimer une demande de collecte par son identifiant
   deleteRequest(requestId: string): Observable<void> {
     let requests = this.getRequestsFromStorage();
     requests = requests.filter(r => r.id !== requestId);
     this.saveRequestsToStorage(requests);
     return of(void 0).pipe(delay(500));
+  }
+
+  getRequestsByCity(city: string): Observable<CollectionRequest[]> {
+    const allRequests: CollectionRequest[] = JSON.parse(localStorage.getItem('collectionRequests') || '[]');
+    const filteredRequests = allRequests.filter(request =>
+      request.collectionAddress.toLowerCase().includes(city.toLowerCase())
+    );
+    return of(filteredRequests).pipe(delay(500));
   }
 
 }

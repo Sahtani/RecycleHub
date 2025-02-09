@@ -8,6 +8,7 @@ export enum UserRole {
 }
 export interface User {
   email: string;
+  createdBy: string;
   password: string;
   firstName: string;
   lastName: string;
