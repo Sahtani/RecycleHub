@@ -6,6 +6,7 @@ import {
 import {NavbarComponent} from '../../../shared/navbar/navbar.component';
 import {RouterLink} from '@angular/router';
 import {SharedButtonComponent} from '../../../shared/shared-button/shared-button.component';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,8 @@ import {SharedButtonComponent} from '../../../shared/shared-button/shared-button
     CollectionRequestListComponent,
     NavbarComponent,
     RouterLink,
-    SharedButtonComponent
+    SharedButtonComponent,
+    NgClass
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,

@@ -6,6 +6,9 @@ import {CollectionRequestService} from '../../../core/services/collection-reques
 import {CollectionRequest} from '../../../core/models/collection-request.model';
 import {Status} from '../../../core/models/status.enum';
 import {DatePipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {NavbarComponent} from '../../../shared/navbar/navbar.component';
+import {SharedButtonComponent} from '../../../shared/shared-button/shared-button.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-collection-request',
@@ -15,7 +18,9 @@ import {DatePipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
     NgIf,
     DatePipe,
     ReactiveFormsModule,
-    TitleCasePipe
+    TitleCasePipe,
+    NavbarComponent,
+    SharedButtonComponent
   ],
   templateUrl: './collection-request.component.html',
   standalone: true,
@@ -26,12 +31,12 @@ export class CollectionRequestComponent implements OnInit{
   wasteTypes = Object.values(WasteType);
   // currentUserRole is got from authentication
   currentUserRole: UserRole = UserRole.Particular;
-  constructor(private fb: FormBuilder, private requestService: CollectionRequestService) {}
+  constructor(private fb: FormBuilder, private requestService: CollectionRequestService,  private router: Router) {}
 
   ngOnInit(): void {
     this.requestForm = this.fb.group({
       wasteTypes: this.fb.array([], Validators.required),
-      photos: [null],
+      photos: this.fb.array([]),
       estimatedWeight: [null, [Validators.required, Validators.min(1000), Validators.max(10000)]],
       collectionAddress: ['', Validators.required],
       collectionDate: ['', Validators.required],
@@ -54,6 +59,27 @@ export class CollectionRequestComponent implements OnInit{
       }
     }
   }
+
+  get photosArray(): FormArray {
+    return this.requestForm.get('photos') as FormArray;
+  }
+
+  // Method to handle file selection and add files to the FormArray
+  onPhotosSelected(event: any): void {
+    const files: FileList = event.target.files;
+    const photosArray = this.requestForm.get('photos') as FormArray;
+    // On vide le tableau existant
+    while (photosArray.length) {
+      photosArray.removeAt(0);
+    }
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      // Créez l'URL blob sans la révoquer immédiatement
+      const fileUrl = URL.createObjectURL(file);
+      photosArray.push(this.fb.control(fileUrl));
+    }
+  }
+
   onSubmit(): void {
     if (this.requestForm.invalid) {
       alert('Veuillez remplir correctement le formulaire.');
@@ -74,7 +100,11 @@ export class CollectionRequestComponent implements OnInit{
     this.requestService.createRequest(newRequest, this.currentUserRole).subscribe({
       next: (request) => {
         alert('Demande de collecte créée avec succès!');
+        this.router.navigate(['/requests'])
+          .then(() => console.log('Navigation réussie'))
+          .catch((error) => console.error('Erreur de navigation :', error));
         this.requestForm.reset();
+
       },
       error: (err) => {
         alert(err.message);

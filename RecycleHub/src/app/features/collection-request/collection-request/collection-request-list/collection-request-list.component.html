@@ -1,37 +1,68 @@
 <div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">List of collection requests</h2>
+  <h2 class="text-2xl text-[#2a372c] font-bold mb-4 text-center">List of collection requests</h2>
 
   <div *ngIf="requests && requests.length > 0; else noRequests">
-    <div class="flex items-center gap-16">
-      <div *ngFor="let request of requests" class="shadow-xl p-6 rounded mb-4 bg-white">
-        <p><strong>Adresse :</strong> {{ request.collectionAddress }}</p>
-        <p><strong>Date :</strong> {{ request.collectionDate | date }}</p>
-        <p><strong>Créneau :</strong> {{ request.timeSlot }}</p>
-        <p><strong>Poids estimé :</strong> {{ request.estimatedWeight }} g</p>
-        <p><strong>Types de déchets :</strong> {{ request.wasteTypes.join(', ') }}</p>
-        <p><strong>Statut :</strong> {{ request.status }}</p>
+    <div class="flex flex-wrap gap-16">
+      <div *ngFor="let request of requests"
+           class="shadow-xl p-6 rounded mb-4 bg-white"
+           style="height: 400px;width: 400px">
+        <div class="mt-4 text-gray-800">
+          <p><strong>Photos:</strong></p>
+          <!-- If there are more than one image, use p-carousel -->
+          <div *ngIf="request.photos && request.photos.length > 1; else singleOrFallback">
+            <p-carousel [value]="request.photos"
+                        [numVisible]="1"
+                        [numScroll]="1"
+                        [circular]="true"
+                        [autoplayInterval]="3000">
+              <ng-template pTemplate="item" let-photo let-i="index">
+                <img [src]="photo" alt="Image {{ i + 1 }}" width="100%" height="300" style="object-fit: cover;" class="rounded">
 
-        <!-- Carousel d'images -->
-        <div *ngIf="request.photos && request.photos.length > 0" class="mt-4">
-          <swiper [config]="swiperConfig">
-            <ng-template swiperSlide *ngFor="let photo of request.photos; let i = index">
-              <img [src]="photo" alt="Image {{ i + 1 }}" class="w-full h-64 object-cover rounded">
+              </ng-template>
+            </p-carousel>
+          </div>
+          <!-- Template for single image or fallback -->
+          <ng-template #singleOrFallback>
+            <!-- If exactly one image, display it -->
+            <div *ngIf="request.photos && request.photos.length === 1; else fallbackImage">
+              <img [src]="request.photos[0]"
+                   alt="Image 1"
+                   width="100%"
+                   height="300"
+                   style="object-fit: cover;"
+                   class="rounded">
+            </div>
+            <!-- Fallback SVG when no image is available -->
+            <ng-template #fallbackImage>
+             <p>    No Image</p>
+
             </ng-template>
-          </swiper>
+          </ng-template>
         </div>
 
-        <!-- Actions selon le rôle (exemple pour particulier et collecteur) -->
-        <div *ngIf="currentUserRole === 'particular'">
-          <button *ngIf="request.status === RequestStatus.EnAttente" (click)="editRequest(request)" class="bg-blue-500 text-white px-4 py-2 rounded">
-            Modifier
+        <!-- Request Details -->
+        <p class="text-gray-800"><strong>Adresse :</strong> {{ request.collectionAddress }}</p>
+        <p class="text-gray-800"><strong>Date :</strong> {{ request.collectionDate | date }}</p>
+        <p class="text-gray-800"><strong>Créneau :</strong> {{ request.timeSlot }}</p>
+        <p class="text-gray-800"><strong>Poids estimé :</strong> {{ request.estimatedWeight }} g</p>
+        <p class="text-gray-800"><strong>Types de déchets :</strong> {{ request.wasteTypes.join(', ') }}</p>
+        <p class="text-gray-800"><strong>Statut :</strong> {{ request.status }}</p>
+
+        <div *ngIf="currentUserRole === userRole.Particular">
+          <button *ngIf="request.status === RequestStatus.EnAttente"
+                  (click)="editRequest(request)"
+                  class="bg-[#82b53e] text-white px-4 py-2 rounded">
+            Update
           </button>
-          <button *ngIf="request.status === RequestStatus.EnAttente" (click)="deleteRequest(request.id)" class="bg-red-500 text-white px-4 py-2 rounded ml-2">
-            Supprimer
+          <button *ngIf="request.status === RequestStatus.EnAttente"
+                  (click)="deleteRequest(request.id)"
+                  class="bg-red-500 text-white px-4 py-2 rounded ml-2">
+            Delete
           </button>
         </div>
-        <div *ngIf="currentUserRole === 'collector'">
+        <div *ngIf="currentUserRole === userRole.Collector">
           <label class="mr-2">Changer le statut :</label>
-          <select [value]="request.status" (change)="updateStatus(request, $event.target.value)">
+          <select [value]="request.status" (change)="updateStatus(request, request.status)">
             <option [value]="RequestStatus.EnAttente">En attente</option>
             <option [value]="RequestStatus.Occupee">Occupée</option>
             <option [value]="RequestStatus.EnCours">En cours</option>
@@ -40,9 +71,10 @@
           </select>
         </div>
       </div>
+
     </div>
   </div>
   <ng-template #noRequests>
-    <p>Aucune demande de collecte trouvée.</p>
+    <p class="text-[#2a372c]">No collection requests found !!</p>
   </ng-template>
 </div>

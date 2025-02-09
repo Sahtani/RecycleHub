@@ -1,30 +1,47 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Créer une Demande de Collecte</h2>
+<app-navbar></app-navbar>
+<div class="container mx-auto p-4 flex flex-col items-center mt-6">
 
-  <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
-    <!-- Sélection des types de déchets -->
+  <h2 class="text-2xl font-bold mb-4 text-[#2a372c] ">Créer une Demande de Collecte</h2>
+
+  <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="w-1/2 bg-white shadow-xl p-8">
+
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 mb-2">Type de déchet à recycler :</label>
+      <div class="flex flex-row ">
+      <label class="block font-medium text-gray-700 mb-2">Type of waste to recycle </label>
+      <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+          fill="#EF4444"/>
+      </svg>
+      </div>
       <div *ngFor="let type of wasteTypes">
         <input
           type="checkbox"
           [value]="type"
           (change)="onWasteTypeChange($event)"
-          id="{{ type }}" />
-        <label for="{{ type }}" class="ml-2">{{ type | titlecase }}</label>
+          id="{{ type }}"
+        class="w-4 h-4 mr-3 focus:ring-1 focus:ring-offset-slate-200 focus:ring-offset-4 focus:ring-[#007bff]"/>
+        <label for="{{ type }}" class="text-black text-sm">{{ type | titlecase }}</label>
       </div>
     </div>
 
     <!-- Photos (optionnel) -->
     <div class="mb-4">
-      <label class="block font-medium text-gray-700 mb-2">Photos (optionnel) :</label>
-      <input type="file" formControlName="photos" multiple class="border p-2">
+      <label class="block font-medium text-gray-700 mb-2">Upload Photos (optional):</label>
+      <input type="file" multiple (change)="onPhotosSelected($event)" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" />
     </div>
 
     <!-- Poids estimé -->
     <div class="mb-4">
+      <div class="flex flex-row ">
       <label class="block font-medium text-gray-700 mb-2">Poids estimé (en grammes) :</label>
-      <input type="number" formControlName="estimatedWeight" class="border p-2 w-full" placeholder="Entre 1000 et 10000">
+      <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+          fill="#EF4444"/>
+      </svg>
+      </div>
+      <input type="number" formControlName="estimatedWeight"  class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" placeholder="Entre 1000 et 10000">
       <div *ngIf="requestForm.get('estimatedWeight')?.invalid && requestForm.get('estimatedWeight')?.touched" class="text-red-600">
         <small *ngIf="requestForm.get('estimatedWeight')?.errors?.['required']">Champ obligatoire</small>
         <small *ngIf="requestForm.get('estimatedWeight')?.errors?.['min']">Minimum 1000g requis</small>
@@ -34,31 +51,60 @@
 
     <!-- Adresse de collecte -->
     <div class="mb-4">
+      <div class="flex flex-row ">
       <label class="block font-medium text-gray-700 mb-2">Adresse de collecte :</label>
-      <input type="text" formControlName="collectionAddress" class="border p-2 w-full" placeholder="Entrez l'adresse de collecte">
+      <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+          fill="#EF4444"/>
+      </svg>
+      </div>
+      <input type="text" formControlName="collectionAddress"  class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" placeholder="Entrez l'adresse de collecte">
     </div>
 
     <!-- Date de collecte -->
     <div class="mb-4">
+      <div class="flex flex-row ">
       <label class="block font-medium text-gray-700 mb-2">Date de collecte :</label>
-      <input type="date" formControlName="collectionDate" class="border p-2 w-full">
+      <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+          fill="#EF4444"/>
+      </svg>
+      </div>
+      <input type="date" formControlName="collectionDate"  class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none">
     </div>
 
     <!-- Créneau horaire -->
     <div class="mb-4">
+      <div class="flex flex-row ">
       <label class="block font-medium text-gray-700 mb-2">Créneau horaire (09:00-18:00) :</label>
-      <input type="time" formControlName="timeSlot" class="border p-2 w-full">
+        <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+            fill="#EF4444"/>
+        </svg>
+      </div>
+      <input type="time" formControlName="timeSlot"  class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none">
     </div>
 
     <!-- Notes supplémentaires (optionnel) -->
     <div class="mb-4">
+      <div class="flex flex-row ">
       <label class="block font-medium text-gray-700 mb-2">Notes supplémentaires :</label>
-      <textarea formControlName="additionalNotes" class="border p-2 w-full" rows="3" placeholder="Ajoutez des informations supplémentaires"></textarea>
+      <svg class="ml-1 mt-1" fill="none" height="7" viewBox="0 0 7 7" width="7" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+          fill="#EF4444"/>
+      </svg>
+      </div>
+      <textarea formControlName="additionalNotes"  class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" rows="3" placeholder="Ajoutez des informations supplémentaires"></textarea>
     </div>
+    <div class="flex items-center justify-center">
 
-    <!-- Bouton de soumission -->
-    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
-      Envoyer la demande
-    </button>
+      <app-shared-button type="submit">
+        Submit
+      </app-shared-button>
+    </div>
   </form>
 </div>
