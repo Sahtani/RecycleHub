@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CollectionRequest} from '../../../../core/models/collection-request.model';
 import {Status} from '../../../../core/models/status.enum';
 import {CollectionRequestService} from '../../../../core/services/collection-request.service';
@@ -6,9 +6,8 @@ import {CommonModule, DatePipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/
 import {UserRole} from '../../../../core/models/user.model';
 import {AuthService} from '../../../../core/services/auth.service';
 import {NavbarComponent} from '../../../../shared/navbar/navbar.component';
-import { Swiper } from 'swiper';
-import {SwiperOptions} from 'swiper/types';
 import {CarouselModule} from 'primeng/carousel';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-collection-request-list',
@@ -20,7 +19,8 @@ import {CarouselModule} from 'primeng/carousel';
     NgForOf,
     NavbarComponent,
     CarouselModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    RouterLink
   ],
   templateUrl: './collection-request-list.component.html',
   styleUrls: ['./collection-request-list.component.css']
@@ -28,9 +28,9 @@ import {CarouselModule} from 'primeng/carousel';
 export class CollectionRequestListComponent implements OnInit {
   requests: CollectionRequest[] = [];
   currentUserRole:  UserRole | null = null;
-  userRole = UserRole;
-
+  public userRole = UserRole;
   public RequestStatus = Status;
+
 
   constructor(private requestService: CollectionRequestService, private authService: AuthService) {}
 
@@ -62,19 +62,34 @@ export class CollectionRequestListComponent implements OnInit {
   }
 
   updateStatus(request: CollectionRequest, newStatus: string): void {
+    console.log('New status received:', newStatus);
     if (Object.values(Status).includes(newStatus as Status)) {
       request.status = newStatus as Status;
+      console.log('Updating request with new status:', request);
       this.requestService.updateRequest(request).subscribe({
-        next: () => {
-          alert('Statut mis à jour avec succès.');
-          this.ngOnInit();
+        next: (updatedRequest) => {
+          console.log('Updated request:', updatedRequest);
+          alert('Status updated successfully.');
+          this.loadRequests();
         },
-        error: (err) => alert('Erreur lors de la mise à jour du statut : ' + err.message)
+        error: (err) => alert('Error updating status: ' + err.message)
       });
     } else {
-      alert('Status invalide.');
+      alert('Invalid status.');
     }
+  }
+  getSelectValue(event: Event): string {
+    const target = event.target as HTMLSelectElement;
+    return target.value;
+  }
+
+  loadRequests(): void {
+    this.requestService.getRequests().subscribe({
+      next: (reqs) => (this.requests = reqs),
+      error: (err) => console.error('Error loading requests:', err)
+    });
   }
 
 
+  protected readonly HTMLSelectElement = HTMLSelectElement;
 }

@@ -14,7 +14,7 @@ export class AuthService {
   register$(userData: User): Observable<User> {
     const mutableUserData = { ...userData };
     if (!mutableUserData.role) {
-      mutableUserData.role = UserRole.Particular;
+      mutableUserData.role = UserRole.Collector;
     }
     localStorage.setItem('user', JSON.stringify(mutableUserData));
     console.log('registration successful!');
@@ -27,7 +27,6 @@ export class AuthService {
     if (userData) {
       const foundUser: User = JSON.parse(userData);
       if (foundUser.email === email && foundUser.password === password) {
-        console.log('login successful and user data is valid!');
         this.currentUserSubject.next(foundUser);
         return of(foundUser).pipe(delay(500));
       }

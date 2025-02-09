@@ -29,7 +29,6 @@ import {Router} from '@angular/router';
 export class CollectionRequestComponent implements OnInit{
   requestForm!: FormGroup;
   wasteTypes = Object.values(WasteType);
-  // currentUserRole is got from authentication
   currentUserRole: UserRole = UserRole.Particular;
   constructor(private fb: FormBuilder, private requestService: CollectionRequestService,  private router: Router) {}
 

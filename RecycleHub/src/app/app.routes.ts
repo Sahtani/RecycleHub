@@ -12,6 +12,9 @@ import {DashboardComponent} from './features/collection-request/dashboard/dashbo
 import {
   CollectionRequestComponent
 } from './features/collection-request/collection-request/collection-request.component';
+import {
+  EditCollectionRequestComponent
+} from './features/collection-request/edit-collection-request/edit-collection-request.component';
 
 export const routes: Routes = [
   {path: '',component:HomeComponent},
@@ -28,4 +31,5 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'create-request', component: CollectionRequestComponent },
+  { path: 'edit-request/:id', component: EditCollectionRequestComponent },
 ];
