@@ -1,46 +1,47 @@
 <div class="container mx-auto p-4">
-  <h2 class="text-2xl font-bold mb-4">Liste des demandes de collecte</h2>
+  <h2 class="text-2xl font-bold mb-4">List of collection requests</h2>
 
   <div *ngIf="requests && requests.length > 0; else noRequests">
-    <div *ngFor="let request of requests" class="border p-4 rounded mb-4">
-      <p><strong>Adresse :</strong> {{ request.collectionAddress }}</p>
-      <p><strong>Date :</strong> {{ request.collectionDate | date }}</p>
-      <p><strong>Créneau :</strong> {{ request.timeSlot }}</p>
-      <p><strong>Poids estimé :</strong> {{ request.estimatedWeight }} g</p>
-      <p><strong>Types de déchets :</strong> {{ request.wasteTypes.join(', ') }}</p>
-      <p><strong>Statut :</strong> {{ request.status }}</p>
+    <div class="flex items-center gap-16">
+      <div *ngFor="let request of requests" class="shadow-xl p-6 rounded mb-4 bg-white">
+        <p><strong>Adresse :</strong> {{ request.collectionAddress }}</p>
+        <p><strong>Date :</strong> {{ request.collectionDate | date }}</p>
+        <p><strong>Créneau :</strong> {{ request.timeSlot }}</p>
+        <p><strong>Poids estimé :</strong> {{ request.estimatedWeight }} g</p>
+        <p><strong>Types de déchets :</strong> {{ request.wasteTypes.join(', ') }}</p>
+        <p><strong>Statut :</strong> {{ request.status }}</p>
 
-      <!-- Actions pour un utilisateur particulier -->
-      <div *ngIf="currentUserRole === 'particular'">
-        <!-- Afficher Modifier et Supprimer uniquement si la demande est en "en attente" -->
-        <button
-          *ngIf="request.status === Status.EnAttente"
-          (click)="editRequest(request)"
-          class="bg-blue-500 text-white px-4 py-2 rounded">
-          Modifier
-        </button>
-        <button
-          *ngIf="request.status === Status.EnAttente"
-          (click)="deleteRequest(request.id)"
-          class="bg-red-500 text-white px-4 py-2 rounded ml-2">
-          Supprimer
-        </button>
-      </div>
+        <!-- Carousel d'images -->
+        <div *ngIf="request.photos && request.photos.length > 0" class="mt-4">
+          <swiper [config]="swiperConfig">
+            <ng-template swiperSlide *ngFor="let photo of request.photos; let i = index">
+              <img [src]="photo" alt="Image {{ i + 1 }}" class="w-full h-64 object-cover rounded">
+            </ng-template>
+          </swiper>
+        </div>
 
-      <!-- Actions pour un collecteur -->
-      <div *ngIf="currentUserRole === 'collector'">
-        <label class="mr-2">Changer le statut :</label>
-        <select [value]="request.status" (change)="updateStatus(request, $event.target.value)">
-          <option [value]="Status.EnAttente">En attente</option>
-          <option [value]="Status.Occupee">Occupée</option>
-          <option [value]="Status.EnCours">En cours</option>
-          <option [value]="Status.Validee">Validée</option>
-          <option [value]="Status.Rejetee">Rejetée</option>
-        </select>
+        <!-- Actions selon le rôle (exemple pour particulier et collecteur) -->
+        <div *ngIf="currentUserRole === 'particular'">
+          <button *ngIf="request.status === RequestStatus.EnAttente" (click)="editRequest(request)" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Modifier
+          </button>
+          <button *ngIf="request.status === RequestStatus.EnAttente" (click)="deleteRequest(request.id)" class="bg-red-500 text-white px-4 py-2 rounded ml-2">
+            Supprimer
+          </button>
+        </div>
+        <div *ngIf="currentUserRole === 'collector'">
+          <label class="mr-2">Changer le statut :</label>
+          <select [value]="request.status" (change)="updateStatus(request, $event.target.value)">
+            <option [value]="RequestStatus.EnAttente">En attente</option>
+            <option [value]="RequestStatus.Occupee">Occupée</option>
+            <option [value]="RequestStatus.EnCours">En cours</option>
+            <option [value]="RequestStatus.Validee">Validée</option>
+            <option [value]="RequestStatus.Rejetee">Rejetée</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
-
   <ng-template #noRequests>
     <p>Aucune demande de collecte trouvée.</p>
   </ng-template>

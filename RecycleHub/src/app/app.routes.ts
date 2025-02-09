@@ -5,6 +5,13 @@ import {RegisterComponent} from './features/auth/register/register.component';
 import {DashboardComponentComponent} from './dashboard-component/dashboard-component.component';
 import {AuthGuard} from './guards/auth.guard';
 import {ProfileComponent} from './features/profile/profile.component';
+import {
+  CollectionRequestListComponent
+} from './features/collection-request/collection-request/collection-request-list/collection-request-list.component';
+import {DashboardComponent} from './features/collection-request/dashboard/dashboard.component';
+import {
+  CollectionRequestComponent
+} from './features/collection-request/collection-request/collection-request.component';
 
 export const routes: Routes = [
   {path: '',component:HomeComponent},
@@ -14,5 +21,11 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard],
-  }
+  },
+  {
+    path: 'requests',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'create-request', component: CollectionRequestComponent },
 ];

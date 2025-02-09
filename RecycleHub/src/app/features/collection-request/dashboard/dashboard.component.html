@@ -1,0 +1,12 @@
+<app-navbar></app-navbar>
+
+<div class=" p-4 bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] h-[100vh] w-full">
+  <a routerLink="/create-request" class="mt-6">
+    <app-shared-button
+      [disabled]="disabled"
+      >
+      Create a request
+    </app-shared-button>
+  </a>
+  <app-collection-request-list></app-collection-request-list>
+</div>

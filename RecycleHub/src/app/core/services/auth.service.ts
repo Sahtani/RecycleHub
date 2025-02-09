@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import {User, UserRole} from '../models/user.model';
-import {defer, delay, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, defer, delay, Observable, of, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+
+  // Observable accessible par d'autres parties de l'application
+  public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
   constructor() {}
+
 
  /* register$(userData: User): Observable<User> {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
@@ -56,6 +61,11 @@ export class AuthService {
     localStorage.clear();
 
     return of(void 0).pipe(delay(500));
+  }
+
+  public get currentUserRole(): UserRole | null {
+    const user = this.currentUserSubject.getValue();
+    return user ? user.role : null;
   }
 
 

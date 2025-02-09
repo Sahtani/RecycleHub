@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, FormsModule, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {WasteType} from '../../../core/models/wastetype.enum';
 import {UserRole} from '../../../core/models/user.model';
 import {CollectionRequestService} from '../../../core/services/collection-request.service';
 import {CollectionRequest} from '../../../core/models/collection-request.model';
 import {Status} from '../../../core/models/status.enum';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-collection-request',
@@ -13,7 +13,9 @@ import {DatePipe, NgForOf, NgIf} from '@angular/common';
     NgForOf,
     FormsModule,
     NgIf,
-    DatePipe
+    DatePipe,
+    ReactiveFormsModule,
+    TitleCasePipe
   ],
   templateUrl: './collection-request.component.html',
   standalone: true,
