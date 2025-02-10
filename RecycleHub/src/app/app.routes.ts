@@ -30,6 +30,6 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'create-request', component: CollectionRequestComponent },
-  { path: 'edit-request/:id', component: EditCollectionRequestComponent },
+  { path: 'create-request', component: CollectionRequestComponent, canActivate: [AuthGuard] },
+  { path: 'edit-request/:id', component: EditCollectionRequestComponent, canActivate: [AuthGuard] },
 ];

@@ -72,10 +72,8 @@ export class EditCollectionRequestComponent implements OnInit {
   onWasteTypeChange(event: any, type: string): void {
     const formArray = this.wasteTypesArray;
     if (event.target.checked) {
-      // Add the type to the FormArray
       formArray.push(this.fb.control(type));
     } else {
-      // Remove the type from the FormArray
       const index = formArray.controls.findIndex(x => x.value === type);
       if (index !== -1) {
         formArray.removeAt(index);

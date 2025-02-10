@@ -67,13 +67,11 @@ export class CollectionRequestComponent implements OnInit{
   onPhotosSelected(event: any): void {
     const files: FileList = event.target.files;
     const photosArray = this.requestForm.get('photos') as FormArray;
-    // On vide le tableau existant
     while (photosArray.length) {
       photosArray.removeAt(0);
     }
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      // Créez l'URL blob sans la révoquer immédiatement
       const fileUrl = URL.createObjectURL(file);
       photosArray.push(this.fb.control(fileUrl));
     }

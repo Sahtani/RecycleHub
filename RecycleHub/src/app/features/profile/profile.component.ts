@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import * as AuthActions from '../auth/store/actions/auth.actions';
-import {Observable} from 'rxjs';
+import {Observable, take} from 'rxjs';
 import {AuthState} from '../auth/store/state/auth.state';
 import {User} from '../../core/models/user.model';
 import {Store} from '@ngrx/store';
@@ -50,17 +50,12 @@ export class ProfileComponent implements OnInit{
     const dialogRef = this.dialog.open(EditProfilePopUpComponent, {
       width: '400px',
       data: userData
-     // data: { ...this.user$} // On transmet une copie d'utilisateur  (immutable )
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Updated profile:', result);
-
-       // this.store.dispatch(AuthActions.updateUser({user: {...result} }));
-        this.store.dispatch(AuthActions.updateUser({ user: JSON.parse(JSON.stringify(result)) }));
-
-
-        //  this.user$ = {...result};
+        this.user$ = result;
+        this.store.dispatch(AuthActions.updateUser({user: JSON.parse(JSON.stringify(result))}));
       }
     });
   }

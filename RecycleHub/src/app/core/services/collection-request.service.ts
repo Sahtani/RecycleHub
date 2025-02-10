@@ -21,17 +21,15 @@ export class CollectionRequestService {
   private saveRequestsToStorage(requests: CollectionRequest[]): void {
     localStorage.setItem(this.storageKey, JSON.stringify(requests));
   }
- // create new collecte request
   createRequest(request: CollectionRequest, currentUserRole: string): Observable<CollectionRequest> {
     const requests = this.getRequestsFromStorage();
-    const loggedUser = this.authservice.loggedUser; // Récupérer l'utilisateur connecté
+    const loggedUser = this.authservice.loggedUser;
 
     if (!loggedUser) {
       return throwError(() => new Error('User not authenticated.'));
     }
 
     if (currentUserRole === 'particular') {
-      // ✅ Filtrer uniquement les demandes créées par l'utilisateur connecté
       const userPendingRequests = requests.filter(r =>
         r.status === Status.EnAttente && r.createdBy === loggedUser.email
       );

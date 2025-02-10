@@ -9,13 +9,13 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+  }
 
   register$(userData: User): Observable<User> {
     const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-    const newUser = { ...userData, role: userData.role ?? UserRole.Collector };
+    const newUser = {...userData, role: userData.role ?? UserRole.Particular};
     users.push(newUser);
-
     localStorage.setItem('users', JSON.stringify(users));
 
     this.currentUserSubject.next(newUser);
@@ -38,7 +38,7 @@ export class AuthService {
 
 
   updateUser(user: User): Observable<User> {
-    const updatedUser = { ...user };
+    const updatedUser = {...user};
     localStorage.setItem('user', JSON.stringify(updatedUser));
     this.currentUserSubject.next(updatedUser);
     return of(updatedUser).pipe(delay(500));
@@ -58,11 +58,14 @@ export class AuthService {
       return user.role;
     }
     return null;
-}
+  }
+
   // @ts-ignore
-  public get loggedUser(): User {
+  public get loggedUser(): User | null {
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (loggedInUser) {
-      return JSON.parse(loggedInUser) ;
+      return JSON.parse(loggedInUser) as User;
     }
+    return null;
+
 }}

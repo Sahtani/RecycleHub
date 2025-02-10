@@ -1,33 +1,32 @@
-<h2 class="text-xl font-bold mb-4">Edit Profile</h2>
-<!-- Exemple de formulaire de modification -->
-<form>
+
+<form class="p-4">
   <div class="mb-3">
-    <label>Email:</label>
-    <input type="email" class="w-full border p-2" [(ngModel)]="data.email" name="email" />
+    <label class="block font-medium text-gray-700 mb-2">Email:</label>
+    <input type="email" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.email" name="email" />
   </div>
   <div class="mb-3">
-    <label>Full Name:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.firstName" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">First Name:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.firstName" name="firstName" />
   </div>
   <div class="mb-3">
-    <label>Last Name:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.lastName" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">Last Name:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.lastName" name="lastName" />
   </div>
   <div class="mb-3">
-    <label>Password:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.password" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">Password:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.password" name="password" />
   </div>
   <div class="mb-3">
-    <label>Adress:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.address" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">Adress:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.address" name="address" />
   </div>
   <div class="mb-3">
-    <label>Phone number:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.phone" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">Phone number:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.phone" name="phone" />
   </div>
   <div class="mb-3">
-    <label>Date of birthday:</label>
-    <input type="text" class="w-full border p-2" [(ngModel)]="data.dateOfBirth" name="fullName" />
+    <label class="block font-medium text-gray-700 mb-2">Date of birthday:</label>
+    <input type="text" class=" p-3 w-full text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded placeholder-gray-400 focus:outline-none" [(ngModel)]="data.dateOfBirth" name="dateOfBirth" />
   </div>
   <!-- Ajoutez d'autres champs selon vos besoins -->
   <div class="flex justify-end space-x-2 mt-4">

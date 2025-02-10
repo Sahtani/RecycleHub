@@ -13,8 +13,11 @@
 
         <!-- primary nav -->
         <div class="hidden md:flex items-center space-x-1">
-          <a routerLink="/requests"  class="py-5 px-3 text-gray-700 hover:text-gray-900">Requests</a>
-          <a  routerLink="/profile" class="py-5 px-3 text-gray-700 hover:text-gray-900">Profile</a>
+<div *ngIf = "userLogged" >
+  <a  routerLink="/requests"  class="py-5 px-3 text-gray-700 hover:text-gray-900">Requests</a>
+  <a  routerLink="/profile" class="py-5 px-3 text-gray-700 hover:text-gray-900">Profile</a>
+</div>
+
         </div>
       </div>
 
