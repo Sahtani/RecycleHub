@@ -1,81 +1,95 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {CollectionRequest} from '../../../../core/models/collection-request.model';
+import {User, UserRole} from '../../../../core/models/user.model';
 import {Status} from '../../../../core/models/status.enum';
 import {CollectionRequestService} from '../../../../core/services/collection-request.service';
-import {CommonModule, DatePipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-import {UserRole} from '../../../../core/models/user.model';
 import {AuthService} from '../../../../core/services/auth.service';
-import {NavbarComponent} from '../../../../shared/navbar/navbar.component';
-import {CarouselModule} from 'primeng/carousel';
 import {RouterLink} from '@angular/router';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {Carousel} from 'primeng/carousel';
+import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-collection-request-list',
+  templateUrl: './collection-request-list.component.html',
   standalone: true,
   imports: [
-    CommonModule,
-    DatePipe,
+    RouterLink,
     NgIf,
-    NgForOf,
-    NavbarComponent,
-    CarouselModule,
-    NgOptimizedImage,
-    RouterLink
+    DatePipe,
+    Carousel,
+    PrimeTemplate,
+    NgForOf
   ],
-  templateUrl: './collection-request-list.component.html',
   styleUrls: ['./collection-request-list.component.css']
 })
-export class CollectionRequestListComponent implements OnInit {
+export class CollectionRequestListComponent implements OnInit, OnDestroy {
   requests: CollectionRequest[] = [];
-  currentUserRole:  UserRole | null = null;
-  public userRole = UserRole;
+  currentUserRole: UserRole | null = null;
+  currentUserEmail: string | null = null;
   public RequestStatus = Status;
+  public userRole = UserRole;
 
+  private userSubscription!: Subscription;
 
-  constructor(private requestService: CollectionRequestService, private authService: AuthService) {}
+  constructor(
+    private requestService: CollectionRequestService,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.currentUserRole = this.authService.currentUserRole;
-    this.requestService.getRequests().subscribe({
-      next: (reqs) => (this.requests = reqs),
-      error: (err) => console.error('Erreur lors du chargement des demandes :', err)
-    });
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUserRole = user ? user.role : null;
+    this.userSubscription = this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.currentUserRole = user.role;
+        this.currentUserEmail = user.email;
+        this.loadRequests(user);
+      } else {
+        this.currentUserRole = null;
+        this.currentUserEmail = null;
+        this.requests = [];
+      }
     });
   }
-  editRequest(request: CollectionRequest): void {
 
-    console.log('Éditer la demande :', request);
+  loadRequests(user: { email: string; address: string }): void {
+    this.requestService.getRequests().subscribe({
+      next: (allRequests) => {
+        if (this.currentUserRole === UserRole.Particular) {
+          this.requests = allRequests.filter(r => r.createdBy === user.email);
+        } else if (this.currentUserRole === UserRole.Collector) {
+          const parts = user.address.split(',');
+          const collectorCity = parts.length >= 2 ? parts[1].trim() : '';
+          this.requests = allRequests.filter(r =>
+            r.collectionAddress.toLowerCase().includes(collectorCity.toLowerCase())
+          );
+        } else {
+          this.requests = allRequests;
+        }
+      },
+      error: (err) => console.error('Error loading requests:', err)
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+  editRequest(request: CollectionRequest): void {
+    console.log('Edit request:', request);
   }
 
   deleteRequest(requestId: string): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
+    if (confirm('Are you sure you want to delete this request?')) {
       this.requestService.deleteRequest(requestId).subscribe({
         next: () => {
-          alert('Demande supprimée avec succès.');
-          this.ngOnInit();
+          alert('Request deleted successfully.');
+          this.loadRequests({email: this.currentUserEmail!, address: ''}); // reload with minimal info
         },
-        error: (err) => alert('Erreur lors de la suppression : ' + err.message)
+        error: (err) => alert('Error deleting request: ' + err.message)
       });
-    }
-  }
-
-  updateStatus(request: CollectionRequest, newStatus: string): void {
-    console.log('New status received:', newStatus);
-    if (Object.values(Status).includes(newStatus as Status)) {
-      request.status = newStatus as Status;
-      console.log('Updating request with new status:', request);
-      this.requestService.updateRequest(request).subscribe({
-        next: (updatedRequest) => {
-          console.log('Updated request:', updatedRequest);
-          alert('Status updated successfully.');
-          this.loadRequests();
-        },
-        error: (err) => alert('Error updating status: ' + err.message)
-      });
-    } else {
-      alert('Invalid status.');
     }
   }
   getSelectValue(event: Event): string {
@@ -83,13 +97,27 @@ export class CollectionRequestListComponent implements OnInit {
     return target.value;
   }
 
-  loadRequests(): void {
-    this.requestService.getRequests().subscribe({
-      next: (reqs) => (this.requests = reqs),
-      error: (err) => console.error('Error loading requests:', err)
-    });
+  updateStatus(request: CollectionRequest, newStatus: string): void {
+    if (Object.values(Status).includes(newStatus as Status)) {
+      request.status = newStatus as Status;
+      this.requestService.updateRequest(request).subscribe({
+        next: () => {
+          alert('Status updated successfully.');
+          this.loadRequests({email: this.currentUserEmail!, address: ''});
+        }, error: (err) => alert('Error updating status: ' + err.message)
+      });
+    } else {
+      alert('Invalid status.');
+    }
   }
 
+  updateUserPoints(userEmail: string, points: number): void {
+    const userData = localStorage.getItem('user');
+    if (!userData) return;
 
-  protected readonly HTMLSelectElement = HTMLSelectElement;
-}
+    let user: User = JSON.parse(userData);
+    if (user.email === userEmail) {
+      user.points = (user.points || 0) + points;
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+}}

@@ -7,8 +7,8 @@ export enum UserRole {
   Particular = 'particular'
 }
 export interface User {
+  points: number;
   email: string;
-  createdBy: string;
   password: string;
   firstName: string;
   lastName: string;

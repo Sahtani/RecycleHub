@@ -27,7 +27,15 @@ export class RegisterComponent implements OnInit{
         firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
         lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
         email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required]),
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/[A-Z]/),
+          Validators.pattern(/[a-z]/),
+          Validators.pattern(/[0-9]/),
+          Validators.pattern(/[@$!%*?&]/)
+        ]),
+
         address: new FormControl('', [Validators.required]),
         phone: new FormControl('', [Validators.required, Validators.minLength(10)]),
         dateOfBirth: new FormControl('')
@@ -41,7 +49,7 @@ export class RegisterComponent implements OnInit{
           this.router.navigate(['/login']).then(() => {
             console.log('Navigation réussie');
           }).catch((error) => {
-            console.error('Erreur de navigation :', error);
+            alert("Erreur de navigation");
           });
         }
         if (state.error) {
@@ -53,7 +61,6 @@ export class RegisterComponent implements OnInit{
 
   onSubmit() {
     if (this.userForm?.valid){
-      console.log("form valide");
       this.store.dispatch(AuthActions.register({ user: this.userForm.value}))
     }
     else {

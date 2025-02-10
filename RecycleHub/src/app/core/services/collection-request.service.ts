@@ -3,6 +3,7 @@ import {CollectionRequest} from '../models/collection-request.model';
 import {delay, Observable, of, throwError} from 'rxjs';
 import {v4 as uuidv4} from 'uuid';
 import {Status} from '../models/status.enum';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,32 +11,46 @@ import {Status} from '../models/status.enum';
 
 export class CollectionRequestService {
   private storageKey = 'collectionRequests';
-  constructor() {}
+  constructor(private authservice: AuthService) {
+    }
 
   private getRequestsFromStorage(): CollectionRequest[] {
     const data = localStorage.getItem(this.storageKey);
     return data ? JSON.parse(data) as CollectionRequest[] : [];
   }
-  // tableau des demands dans localStorage :
   private saveRequestsToStorage(requests: CollectionRequest[]): void {
     localStorage.setItem(this.storageKey, JSON.stringify(requests));
   }
  // create new collecte request
   createRequest(request: CollectionRequest, currentUserRole: string): Observable<CollectionRequest> {
     const requests = this.getRequestsFromStorage();
+    const loggedUser = this.authservice.loggedUser; // Récupérer l'utilisateur connecté
+
+    if (!loggedUser) {
+      return throwError(() => new Error('User not authenticated.'));
+    }
+
     if (currentUserRole === 'particular') {
-      const pendingCount = requests.filter(r=> r.status === Status.EnAttente).length;
-      if (pendingCount >= 3) {
-        return throwError(() => new Error('Maximum 3 demandes simultanées non finalisées autorisées.'));
+      // ✅ Filtrer uniquement les demandes créées par l'utilisateur connecté
+      const userPendingRequests = requests.filter(r =>
+        r.status === Status.EnAttente && r.createdBy === loggedUser.email
+      );
+
+      if (userPendingRequests.length >= 3) {
+        return throwError(() => new Error('Maximum 3 pending requests per user.'));
       }
     }
-    // generate unique id :
+
     request.id = uuidv4();
+    request.createdBy = loggedUser.email;
     request.status = Status.EnAttente;
+
     requests.push(request);
     this.saveRequestsToStorage(requests);
+
     return of(request).pipe(delay(500));
   }
+
 
   getRequests(): Observable<CollectionRequest[]> {
     const requests = this.getRequestsFromStorage();

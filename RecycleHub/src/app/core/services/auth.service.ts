@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { User, UserRole } from '../models/user.model';
-import { BehaviorSubject, delay, Observable, of, throwError } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {User, UserRole} from '../models/user.model';
+import {BehaviorSubject, delay, Observable, of, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +12,30 @@ export class AuthService {
   constructor() {}
 
   register$(userData: User): Observable<User> {
-    const mutableUserData = { ...userData };
-    if (!mutableUserData.role) {
-      mutableUserData.role = UserRole.Collector;
-    }
-    localStorage.setItem('user', JSON.stringify(mutableUserData));
-    console.log('registration successful!');
-    this.currentUserSubject.next(mutableUserData);
-    return of(mutableUserData).pipe(delay(500));
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+    const newUser = { ...userData, role: userData.role ?? UserRole.Collector };
+    users.push(newUser);
+
+    localStorage.setItem('users', JSON.stringify(users));
+
+    this.currentUserSubject.next(newUser);
+    return of(newUser).pipe(delay(500));
   }
 
+
   login$(email: string, password: string): Observable<User> {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const foundUser: User = JSON.parse(userData);
-      if (foundUser.email === email && foundUser.password === password) {
-        this.currentUserSubject.next(foundUser);
-        return of(foundUser).pipe(delay(500));
-      }
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+    const foundUser = users.find(user => user.email === email && user.password === password);
+
+    if (foundUser) {
+      this.currentUserSubject.next(foundUser);
+      localStorage.setItem('loggedInUser', JSON.stringify(foundUser));
+      return of(foundUser).pipe(delay(500));
     }
+
     return throwError(() => new Error('Invalid credentials')).pipe(delay(500));
   }
+
 
   updateUser(user: User): Observable<User> {
     const updatedUser = { ...user };
@@ -49,7 +52,17 @@ export class AuthService {
   }
 
   public get currentUserRole(): UserRole | null {
-    const user = this.currentUserSubject.getValue();
-    return user ? user.role : null;
-  }
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      const user: User = JSON.parse(loggedInUser);
+      return user.role;
+    }
+    return null;
 }
+  // @ts-ignore
+  public get loggedUser(): User {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      return JSON.parse(loggedInUser) ;
+    }
+}}

@@ -86,6 +86,7 @@ export class CollectionRequestComponent implements OnInit{
     }
     const formValue = this.requestForm.value;
     const newRequest: CollectionRequest = {
+      createdBy: '',
       id: '',
       wasteTypes: formValue.wasteTypes,
       photos: formValue.photos,

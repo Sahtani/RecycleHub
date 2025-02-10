@@ -1,13 +1,11 @@
 <app-navbar></app-navbar>
 
-<div class="w-full h-fit  flex items-center justify-center bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] ">
+<div class="w-full h-fit  flex items-center justify-center bg-gradient-to-t from-[#bed47c] to-[#dfe4d3] mt-10 ">
   <div class="w-2xl h-auto   rounded shadow-xl bg-white">
 
     <app-header-form></app-header-form>
-    <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="!max-w-none !m-10 !p-0 !border-0 !rounded-none">
+    <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="!max-w-none !mx-10 !p-0 !border-0 !rounded-none">
   <!-- First Name -->
-      <div class="flex flex-row items-center justify-between border-none !mb-0">
-        <!-- Contenu pour First Name -->
         <div class="!mb-0">
           <div class="flex flex-row ">
             <label class="flex items-center text-gray-600 text-sm font-medium ">
@@ -19,8 +17,11 @@
                 fill="#EF4444"/>
             </svg>
           </div>
+          <div>
+
+          </div>
           <div class="relative text-gray-500 focus-within:text-gray-900">
-            <input class="block h-11 pr-5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+            <input class="block h-11 w-full pr-5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
                    formControlName="firstName"
                    id="default-search"
                    placeholder="Enter Name"
@@ -55,7 +56,7 @@
             <small *ngIf="userForm.get('lastName')?.errors?.['minlength']">Minimum 2 caractères</small>
           </div>
         </div>
-      </div>
+
 
       <!-- Email -->
 
@@ -157,13 +158,21 @@
     </div>
   </div>
       <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
-        <small *ngIf="userForm.get('password')?.errors?.['required']">Champ obligatoire</small>
-        <small *ngIf="userForm.get('password')?.errors?.['pattern']">
-          Minimum 8 caractères avec chiffres et lettres
+        <small *ngIf="userForm.get('password')?.hasError('required')" class="text-red-500">Password is required.</small>
+        <small *ngIf="userForm.get('password')?.hasError('minlength')" class="text-red-500">Password must be at least 8 characters.</small>
+        <small *ngIf="userForm.get('password')?.hasError('pattern')" class="text-red-500">
+          Password must contain:
+          <ul class="list-disc pl-5">
+            <li>At least one uppercase letter</li>
+            <li>At least one lowercase letter</li>
+            <li>At least one number</li>
+            <li>At least one special character</li>
+          </ul>
         </small>
       </div>
 
-  <!-- Date of Birth -->
+
+      <!-- Date of Birth -->
     <div class="relative mb-1">
       <div class="flex flex-row">
     <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Date of birth:</label>

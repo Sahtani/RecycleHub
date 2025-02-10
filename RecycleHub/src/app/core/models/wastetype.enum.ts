@@ -1,6 +1,6 @@
 export enum WasteType {
-  Plastique = 'plastique',
-  Verre = 'verre',
-  Papier = 'papier',
+  Plastic = 'plastic',
+  Glass = 'glass',
+  Paper = 'paper',
   Metal = 'metal'
 }

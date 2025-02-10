@@ -64,14 +64,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onLogin(): void {
-    const email = this.loginForm.get('email')?.value ?? '';
-    const password = this.loginForm.get('password')?.value ?? '';
-    const userRole = this.loginForm.get('password')?.value ?? '';
-    if (email && password) {
-      this.store.dispatch(AuthActions.login({ email, password }));
-      console.log('Login dispatché');
-    } else {
+    if (this.loginForm.invalid) {
       alert('Veuillez remplir tous les champs.');
+      return;
     }
+
+    const email = this.loginForm.get('email')?.value.trim();
+    const password = this.loginForm.get('password')?.value.trim();
+
+    this.store.dispatch(AuthActions.login({ email, password }));
+    this.store.select(state => state.auth.user).subscribe(user => {
+      if (user) {
+        console.log('Connexion réussie, redirection...');
+        this.router.navigate(['/profile']);
+      } else {
+        console.log('Échec de la connexion');
+      }
+    });
   }
+
 }
